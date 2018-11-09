@@ -1,0 +1,28 @@
+{
+  "ignore": [
+    "**/*.min.js"
+  ],
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "loose": true,
+        "useBuiltIns": false,
+        "targets": {
+          "browsers": [
+            "last 4 versions",
+            "ie >= 9",
+            "iOS >= 7",
+            "Android >= 4"
+          ]
+        }
+      }
+    ],
+    "stage-2"
+  ],
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-runtime"
+  ]
+}
