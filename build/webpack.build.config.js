@@ -50,7 +50,7 @@ let webpackConfig = {
           test: /[\\/]src[\\/]common[\\/]/,
           name: 'commons',
           minSize: 30000,
-          minChunks: 3, // 达到被3个引用的才抽出成为common
+          minChunks: 2, // 达到被3个引用的才抽出成为common
           chunks: 'all',
           priority: -1,
           // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的
