@@ -1,38 +1,41 @@
-let path = require('path')
-let merge = require('webpack-merge')
-let plugin = require('./plugin')
-let { getPages } = require('./utils')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const merge = require('webpack-merge');
+const plugin = require('./plugin');
+const { getPages } = require('./utils');
 
-let baseWebpackConfig = require('./webpack.base.config')
+const baseWebpackConfig = require('./webpack.base.config');
 
-let entry = {}
-let htmlConfigs = []
-let pages = getPages(path.resolve('src'))
-pages.forEach(page => {
-  entry[page.id] = page.entry
+let entry = {};
+// const htmlConfigs = [];
+// const pages = getPages(path.resolve('src'));
+// pages.forEach((page) => {
+//   entry[page.id] = page.entry;
 
-  page.template = path.resolve('index.html')
-  page.filename = 'html/' + page.id + '.html'
-  page.chunks = [page.id]
+//   page.template = path.resolve('index.html');
+//   page.filename = `html/${page.id}.html`;
+//   page.chunks = [page.id];
 
-  htmlConfigs.push(page)
-})
+//   htmlConfigs.push(page);
+// });
 
-let htmls = htmlConfigs.map(config => plugin.html(config))
+// const htmls = htmlConfigs.map(config => plugin.html(config));
+
+entry = './src/index.js';
 // 基本配置
-let webpackConfig = {
+const webpackConfig = {
   mode: 'development',
   devtool: 'cheap-module-eval-source-map',
-  entry: entry,
+  // entry,
   output: {
     publicPath: '/',
     filename: 'js/[name].js',
-    chunkFilename: 'js/[name].js'
+    chunkFilename: 'js/[name].js',
   },
   plugins: [
     plugin.hmr(),
-    plugin.friendlyErrors()
-  ].concat(htmls),
+    plugin.friendlyErrors(),
+  ].concat(new HtmlWebpackPlugin({ template: './index.html' })),
   externals: {},
   devServer: {
     host: '0.0.0.0',
@@ -53,12 +56,12 @@ let webpackConfig = {
     disableHostCheck: true,
     overlay: true,
     watchOptions: {
-      poll: true
-    }
-  }
-}
+      poll: true,
+    },
+  },
+};
 
 module.exports = merge(
   baseWebpackConfig,
-  webpackConfig
-)
+  webpackConfig,
+);

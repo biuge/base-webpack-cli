@@ -1,28 +1,29 @@
-{
-  "root": true,
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "sourceType": "module"
-  },
-  "env": {
-    "browser": true,
-    "es6": true
-  },
-  "globals":{
-    "console": true
-  },
-  "extends": [
-    "standard"
-  ],
-  "plugins": [],
-  "rules": {
-    "no-var": 1,
-    "no-alert": 1,
-    "prefer-promise-reject-errors": 0,
-    "no-unused-vars": 1,
-    "no-debugger": 1,
-    "no-console": [1, {
-      "allow": ["info", "warn", "error"]
-    }]
-  }
-}
+// {
+//   "root": true,
+//   "parser": "babel-eslint",
+//   "parserOptions": {
+//     "sourceType": "module"
+//   },
+//   "env": {
+//     "browser": true,
+//     "es6": true
+//   },
+//   "globals":{
+//     "console": true
+//   },
+//   "extends": [
+//     "standard"
+//   ],
+//   "plugins": [],
+//   "rules": {
+//     "no-var": 1,
+//     "no-alert": 1,
+//     "prefer-promise-reject-errors": 0,
+//     "no-unused-vars": 1,
+//     "no-debugger": 1,
+//     "no-console": [1, {
+//       "allow": ["info", "warn", "error"]
+//     }]
+//   }
+// }
+

@@ -1,53 +1,53 @@
-let fs = require('fs')
-let path = require('path')
-let MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const fs = require('fs');
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-let resolve = path.resolve
-let dev = process.env.NODE_ENV === 'development'
+const resolve = path.resolve;
+const dev = process.env.NODE_ENV === 'development';
 
-let styleLoader = {
+const styleLoader = {
   loader: 'style-loader',
   options: {
-    sourceMap: dev
-  }
-}
+    sourceMap: dev,
+  },
+};
 
 // css
-let cssLoader = {
+const cssLoader = {
   loader: 'css-loader',
   options: {
     sourceMap: dev,
     modules: false,
-    importLoaders: 1
-  }
-}
+    importLoaders: 1,
+  },
+};
 
-let moduleCSSLoader = {
+const moduleCSSLoader = {
   loader: 'css-loader',
   options: {
     sourceMap: dev,
     modules: true,
     camelCase: 'only',
     importLoaders: 1,
-    localIdentName: '[local]___[hash:base64:8]'
-  }
-}
+    localIdentName: '[local]___[hash:base64:8]',
+  },
+};
 
 // postcss
-let postCSSLoader = {
+const postCSSLoader = {
   loader: 'postcss-loader',
   options: {
     sourceMap: dev,
     config: {
-      path: path.join(__dirname, './postcss.config.js')
-    }
-  }
-}
+      path: path.join(__dirname, './postcss.config.js'),
+    },
+  },
+};
 
-function getCSSLoaders (modules) {
+function getCSSLoaders(modules) {
   return dev
     ? [styleLoader, modules ? moduleCSSLoader : cssLoader, postCSSLoader]
-    : [MiniCssExtractPlugin.loader, modules ? moduleCSSLoader : cssLoader, postCSSLoader]
+    : [MiniCssExtractPlugin.loader, modules ? moduleCSSLoader : cssLoader, postCSSLoader];
 }
 
 exports.css = () => {
@@ -58,22 +58,22 @@ exports.css = () => {
       // this matches `<style module>`
       {
         resourceQuery: /module/,
-        use: getCSSLoaders(true)
+        use: getCSSLoaders(true),
       },
       // this matches plain `<style>` or `<style scoped>`
       {
-        use: getCSSLoaders(false)
-      }
-    ]
-  }
-}
+        use: getCSSLoaders(false),
+      },
+    ],
+  };
+};
 
 exports.cssModules = () => {
   return {
     test: /\.module\.css$/,
-    use: getCSSLoaders(true)
-  }
-}
+    use: getCSSLoaders(true),
+  };
+};
 
 // eslint
 exports.eslint = () => {
@@ -87,25 +87,26 @@ exports.eslint = () => {
       cache: dev ? resolve('.cache/eslint') : false,
       failOnError: !dev, // 生产环境发现代码不合法，则中断编译
       useEslintrc: true,
-      formatter: require('eslint-friendly-formatter')
-    }
-  }
-}
+      formatter: require('eslint-friendly-formatter'),
+    },
+  };
+};
 
 // babel
 exports.babel = () => {
   return {
     test: /\.jsx?$/,
-    include: resolve('src'),
+    // include: resolve('src'),
+    exclude: /node_modules/,
     use: {
       loader: 'babel-loader',
       options: {
         cacheDirectory: resolve('.cache/babel'),
-        babelrc: true
-      }
-    }
-  }
-}
+        babelrc: true,
+      },
+    },
+  };
+};
 
 // images
 exports.images = (opt = {}) => {
@@ -116,8 +117,8 @@ exports.images = (opt = {}) => {
         loader: 'url-loader',
         options: {
           limit: 3000,
-          name: opt.filename || 'images/[name].[hash:8].[ext]'
-        }
+          name: opt.filename || 'images/[name].[hash:8].[ext]',
+        },
       },
       // 生产模式启用图片压缩
       !dev && {
@@ -125,11 +126,11 @@ exports.images = (opt = {}) => {
         options: {
           plugins: [
             {
-              use: 'imagemin-pngquant'
+              use: 'imagemin-pngquant',
             },
             {
-              use: 'imagemin-mozjpeg'
-            }
+              use: 'imagemin-mozjpeg',
+            },
             // {
             //   use: 'imagemin-guetzli'
             // },
@@ -142,12 +143,12 @@ exports.images = (opt = {}) => {
             // {
             //   use: 'imagemin-webp'
             // }
-          ]
-        }
-      }
-    ].filter(p => p)
-  }
-}
+          ],
+        },
+      },
+    ].filter(p => p),
+  };
+};
 
 // fonts
 exports.fonts = (opt = {}) => {
@@ -156,10 +157,10 @@ exports.fonts = (opt = {}) => {
     loader: 'url-loader',
     options: {
       limit: 3000,
-      name: opt.filename || 'fonts/[name].[hash:8].[ext]'
-    }
-  }
-}
+      name: opt.filename || 'fonts/[name].[hash:8].[ext]',
+    },
+  };
+};
 
 // media
 exports.medias = (opt = {}) => {
@@ -168,15 +169,15 @@ exports.medias = (opt = {}) => {
     loader: 'url-loader',
     options: {
       limit: 3000,
-      name: opt.filename || 'medias/[name].[hash:8].[ext]'
-    }
-  }
-}
+      name: opt.filename || 'medias/[name].[hash:8].[ext]',
+    },
+  };
+};
 
 // text
 exports.text = () => {
   return {
     test: /\.(md|txt|tpl)$/,
-    loader: 'raw-loader'
-  }
-}
+    loader: 'raw-loader',
+  };
+};

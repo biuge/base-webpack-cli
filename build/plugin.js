@@ -1,38 +1,38 @@
-let fs = require('fs')
-let path = require('path')
-let webpack = require('webpack')
-let notifier = require('node-notifier')
-let internalIp = require('internal-ip')
+const fs = require('fs');
+const path = require('path');
+const webpack = require('webpack');
+const notifier = require('node-notifier');
+const internalIp = require('internal-ip');
 
-let resolve = path.resolve
+const resolve = path.resolve;
 
-let InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
-let VconsolePlugin = require('vconsole-webpack-plugin')
-let OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-let MiniCssExtractPlugin = require('mini-css-extract-plugin')
-let HtmlWebpackPlugin = require('html-webpack-plugin')
-let FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-let UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
-let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
+const VconsolePlugin = require('vconsole-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // 这里将 Node 中使用的变量也传入到 Web 环境中，以方便使用
 exports.define = () => {
   return new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV === 'development' ? 'development' : 'production')
-    }
-  })
-}
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV === 'development' ? 'development' : 'production'),
+    },
+  });
+};
 
 // 启用HMR
 exports.hmr = () => {
-  return new webpack.HotModuleReplacementPlugin()
-}
+  return new webpack.HotModuleReplacementPlugin();
+};
 
 // hash 用于编译时未修改内容时 hash不变提高缓存性能  生产用
 exports.hash = () => {
-  return new webpack.HashedModuleIdsPlugin()
-}
+  return new webpack.HashedModuleIdsPlugin();
+};
 
 // 代码压缩插件
 exports.uglify = () => {
@@ -46,60 +46,61 @@ exports.uglify = () => {
       compress: {
         unused: true,
         warnings: false,
-        drop_debugger: true
+        drop_debugger: true,
       },
       output: {
-        comments: false
-      }
-    }
-  })
-}
+        comments: false,
+      },
+    },
+  });
+};
 
 // Merge chunks
 exports.merge = () => {
-  return new webpack.optimize.AggressiveMergingPlugin()
-}
+  return new webpack.optimize.AggressiveMergingPlugin();
+};
 
 // 将manifest内联到html中，避免多发一次请求
 exports.inlineManifest = () => {
-  return new InlineManifestWebpackPlugin()
-}
+  return new InlineManifestWebpackPlugin();
+};
 
 // 优化控制台输出
 exports.friendlyErrors = () => {
-  let localIP = internalIp.v4.sync()
+  const localIP = internalIp.v4.sync();
 
   return new FriendlyErrorsPlugin({
     compilationSuccessInfo: {
       messages: [
-        `Local    ->  http://localhost:5000/`,
-        `Network  ->  http://${localIP}:5000/`
-      ]
+        'Local    ->  http://localhost:5000/',
+        `Network  ->  http://${localIP}:5000/`,
+      ],
     },
     onErrors: (severity, errors) => {
-      if (!config.fle.notify) return
-      if (severity !== 'error') return
+      console.log(errors);
+      if (!config.fle.notify) return;
+      if (severity !== 'error') return;
 
-      let error = errors[0]
-      let filename = error.file && error.file.split('!').pop()
+      const error = errors[0];
+      const filename = error.file && error.file.split('!').pop();
 
       notifier.notify({
         title: path.basename(resolve('.')),
-        message: severity + ': ' + error.name,
+        message: `${severity  }: ${  error.name}`,
         subtitle: filename || '',
-        icon: path.join(__dirname, './logo.png')
-      })
-    }
-  })
-}
+        icon: path.join(__dirname, './logo.png'),
+      });
+    },
+  });
+};
 
 // 分离css文件
 exports.extractCSS = (opt = {}) => {
   return new MiniCssExtractPlugin({
     filename: opt.filename || 'css/[name].[contenthash:8].css',
-    chunkFilename: opt.chunkFilename || 'css/[name].[contenthash:8].css'
-  })
-}
+    chunkFilename: opt.chunkFilename || 'css/[name].[contenthash:8].css',
+  });
+};
 
 // 优化css打包，避免重复打包
 exports.optimizeCSS = () => {
@@ -110,23 +111,23 @@ exports.optimizeCSS = () => {
       autoprefixer: { disable: true },
       mergeLonghand: false,
       discardComments: {
-        removeAll: true
-      }
+        removeAll: true,
+      },
     },
-    canPrint: true
-  })
-}
+    canPrint: true,
+  });
+};
 
 // 模块依赖分析
 exports.analyzer = (opt = {}) => {
   return new BundleAnalyzerPlugin({
     openAnalyzer: true,
     analyzerMode: 'static', // server, static
-    reportFilename: opt.filename || 'report.html'
-  })
-}
+    reportFilename: opt.filename || 'report.html',
+  });
+};
 
-let htmlDefaults = {
+const htmlDefaults = {
   title: 'fle-cli',
   keywords: '',
   description: '',
@@ -149,10 +150,10 @@ let htmlDefaults = {
     keepClosingSlash: true,
     minifyJS: true,
     minifyCSS: true,
-    minifyURLs: true
-  }
-}
+    minifyURLs: true,
+  },
+};
 
 exports.html = (opt = {}) => {
-  return new HtmlWebpackPlugin(Object.assign({}, htmlDefaults, opt))
-}
+  return new HtmlWebpackPlugin(Object.assign({}, htmlDefaults, opt));
+};
