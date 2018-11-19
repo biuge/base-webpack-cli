@@ -22,6 +22,12 @@ const cssLoader = {
   },
 };
 
+const lessLoader = {
+  loader: 'less-loader',
+  options: {
+    sourceMap: dev,
+  },
+};
 const moduleCSSLoader = {
   loader: 'css-loader',
   options: {
@@ -50,6 +56,8 @@ function getCSSLoaders(modules) {
     : [MiniCssExtractPlugin.loader, modules ? moduleCSSLoader : cssLoader, postCSSLoader];
 }
 
+// css 特殊的写法可以参考demo里的xx.module.css 这是开启了局部作用域的css写法
+// 因为启用antd框架启用了less所以我们还需要加载less-loader 这里自行判断要用那个写
 exports.css = () => {
   return {
     test: /\.css$/,
@@ -65,6 +73,24 @@ exports.css = () => {
         use: getCSSLoaders(false),
       },
     ],
+  };
+};
+
+exports.less = () => {
+  return {
+    test: /\.less$/,
+    include: /node_modules/,
+    // include: path.join(__dirname, '/node_modules/antd-mobile'),
+    use: [styleLoader, cssLoader, lessLoader],
+  };
+};
+
+exports.lessModules = () => {
+  return {
+    test: /\.less$/,
+    exclude: /node_modules/,
+    // include: path.join(__dirname, '/node_modules/antd-mobile'),
+    use: [styleLoader, moduleCSSLoader, lessLoader],
   };
 };
 

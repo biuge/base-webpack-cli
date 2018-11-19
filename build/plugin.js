@@ -86,7 +86,7 @@ exports.friendlyErrors = () => {
 
       notifier.notify({
         title: path.basename(resolve('.')),
-        message: `${severity  }: ${  error.name}`,
+        message: `${severity}: ${error.name}`,
         subtitle: filename || '',
         icon: path.join(__dirname, './logo.png'),
       });
@@ -128,9 +128,9 @@ exports.analyzer = (opt = {}) => {
 };
 
 const htmlDefaults = {
-  title: 'fle-cli',
+  title: 'basewebpack-cli',
   keywords: '',
-  description: '',
+  description: '基于fle-cli的webpack基本配置 加上less 和antd框架 dva 用于最常规的react开发',
   icon: '',
   css: [],
   prejs: [],

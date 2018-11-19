@@ -26,6 +26,8 @@ const webpackConfig = {
     rules: [
       // loader.eslint(),
       loader.css(),
+      loader.less(),
+      loader.lessModules(),
       loader.cssModules(),
       loader.babel(),
       loader.text(),
