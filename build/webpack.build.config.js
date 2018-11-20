@@ -9,7 +9,7 @@ let baseWebpackConfig = require('./webpack.base.config')
 let entry = {}
 let htmls = []
 let pages = getPages(path.resolve('src'))
-
+console.log(pages)
 pages.forEach(page => {
   entry[page.id] = page.entry
 
