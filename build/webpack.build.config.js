@@ -42,6 +42,7 @@ const webpackConfig = {
           name: 'vendors',
           minSize: 30000,
           minChunks: 1,
+          // nihao
           // all无论是异步加载的模块还是静态模块的node_modules都会打包进来；此处如果使用initial就是页面初始那些chunks async 则异步加载文件中的包会被打包进对应的js代码里
           chunks: 'initial',
           priority: 1,
