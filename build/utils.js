@@ -6,7 +6,7 @@ exports.getPages = function (dir, prefix = '', pages = []) {
     // common目录除外
     if (dirname === 'common') return;
     // 获得文件夹名称其实就是路径
-    const id = prefix + dirname; // eg  "example"
+    const id = prefix + dirname; // eg  "example test"
     const childDirPath = path.join(dir, dirname); // src下文件夹的路径 eg "/Users/chenlei/codeRepository/test/webpack4-test-master/src/example"
     const childDirStat = fs.statSync(childDirPath); // 文件夹的stat 对象 表示文件状态 比如最后修改时间,大小之类的
 
