@@ -25,6 +25,7 @@ const cssLoader = {
 const lessLoader = {
   loader: 'less-loader',
   options: {
+    javascriptEnabled: true,
     sourceMap: dev,
   },
 };
@@ -35,7 +36,7 @@ const moduleCSSLoader = {
     modules: true,
     camelCase: 'only',
     importLoaders: 1,
-    localIdentName: '[local]___[hash:base64:8]',
+    localIdentName: '[path]___[local]___[hash:base64:5]',
   },
 };
 

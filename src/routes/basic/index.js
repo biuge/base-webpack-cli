@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
-import { Button } from 'antd-mobile';
+import { Button } from 'antd';
 import styles from './index.css';
 import styles2 from './index.less';
 import logo from '@/common/hello/images/logo.png';

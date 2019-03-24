@@ -16,8 +16,15 @@ const dynamicWrapper = (app, models, component) => {
   // () => import('module')
   return Loadable({
     loader: component,
-    loading: () => {
-      return <div>loading...</div>;
+    loading: ({ error, pastDelay }) => {
+      if (error) {
+        console.dir(error);
+        return <div>error</div>;
+      } else if (pastDelay) {
+        return <div>Loading...</div>;
+      } else {
+        return null;
+      }
     },
   });
 };
@@ -33,10 +40,15 @@ export const getRouterData = (app) => {
       name: '首页',
       component: dynamicWrapper(app, [], () => import('../routes/home')),
     },
-    '/login': {
+    '/antd': {
       name: '登录',
-      component: dynamicWrapper(app, [], () => import('../routes/login')),
+      component: dynamicWrapper(app, [], () => import('../routes/form/antd')),
     },
+    '/form': {
+      name: '登录',
+      component: dynamicWrapper(app, ['contactForm'], () => import('../routes/form')),
+    },
+
   };
   const routerdata = Object.keys(routerConfig).map((data, i) => {
     return (
