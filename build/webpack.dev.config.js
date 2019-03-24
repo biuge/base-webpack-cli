@@ -33,16 +33,71 @@ const webpackConfig = {
     chunkFilename: 'js/[name].js',
   },
   plugins: [
-    plugin.hmr(),
+    // plugin.hmr(),
     plugin.friendlyErrors(),
   ].concat(new HtmlWebpackPlugin({ template: './index.html' })),
   externals: {},
   devServer: {
     host: '0.0.0.0',
     port: 5000,
-    proxy: {},
+    proxy: {
+      '/magicCubeApi': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/ProxyDHOME': {
+        target: 'http://10.7.28.14/',
+        changeOrigin: true,
+        pathRewrite: { '^/ProxyDHOME': '' },
+      },
+      '/antColonyCapApi': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/antColonyOdsApi': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/antColonyScrmApi': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/antColonyTmcsApi': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/antColonyAcssApi': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/antColonyUmsApi': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/marketingScoreNode': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/magicBoxApi': {
+        target: 'https://10.77.0.148/',
+        changeOrigin: true,
+      },
+
+      '/teamWorkApi': {
+        target: 'https://statictest.tf56.com',
+        changeOrigin: true,
+      },
+      '/ehacasApi': {
+        target: 'https://sitetest.tf56.com',
+        changeOrigin: true,
+      },
+      '/lujingGisAdmin': {
+        target: 'https://10.7.28.14',
+        changeOrigin: true,
+      },
+    },
     historyApiFallback: true,
-    hot: true,
+    hot: false,
     open: false,
     https: false,
     contentBase: false,
@@ -56,8 +111,11 @@ const webpackConfig = {
     disableHostCheck: true,
     overlay: true,
     watchOptions: {
-      poll: true,
+      poll: 1000,
+      ignored: /node_modules/,
+
     },
+    // watch:false
   },
 };
 

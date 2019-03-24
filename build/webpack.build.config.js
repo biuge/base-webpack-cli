@@ -1,33 +1,40 @@
 const fs = require('fs');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const plugin = require('./plugin');
 const { getPages } = require('./utils');
 
 const baseWebpackConfig = require('./webpack.base.config');
 
-const entry = {};
-const htmls = [];
-const pages = getPages(path.resolve('src'));
+let entry = {};
 
-pages.forEach((page) => {
-  entry[page.id] = page.entry;
+// const htmls = [];
+// const pages = getPages(path.resolve('src'));
 
-  page.template = path.resolve('index.html');
-  page.filename = `html/${page.id}.html`;
-  page.chunks = ['runtime', 'vendors', 'commons', page.id];
+// pages.forEach((page) => {
+//   entry[page.id] = page.entry;
 
-  htmls.push(plugin.html(page));
-});
+//   page.template = path.resolve('index.html');
+//   page.filename = `html/${page.id}.html`;
+//   page.chunks = ['runtime', 'vendors', 'commons', page.id];
+
+//   htmls.push(plugin.html(page));
+// });
+entry = './src/index.js';
 
 const webpackConfig = {
   mode: 'production',
   entry,
   output: {
     path: path.resolve('dist'),
-    publicPath: '../',
+    publicPath: './',
     filename: 'js/[name].[chunkhash:8].js',
     chunkFilename: 'js/[name].[chunkhash:8].js',
+  },
+  stats: {
+    entrypoints: false,
+    children: false,
   },
   optimization: {
     minimizer: [
@@ -68,13 +75,11 @@ const webpackConfig = {
     plugin.analyzer({
       filename: '../.cache/report.build.html',
     }),
-  ].concat(htmls, [
+  ].concat(new HtmlWebpackPlugin({ template: './index.html' }), [
     plugin.inlineManifest(),
   ]),
   externals: {},
 };
 
-module.exports = merge(
-  baseWebpackConfig,
-  webpackConfig,
-);
+module.exports = merge(baseWebpackConfig, webpackConfig);
+

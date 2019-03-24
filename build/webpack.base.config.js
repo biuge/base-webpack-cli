@@ -1,6 +1,7 @@
 const path = require('path');
 const loader = require('./loader');
 const plugin = require('./plugin');
+const aliasConfig = require('../aliasrc.js');
 
 // 基本配置
 const webpackConfig = {
@@ -13,9 +14,7 @@ const webpackConfig = {
       path.resolve('node_modules'),
     ],
     extensions: ['.js', '.vue', '.jsx', '.css', '.less'],
-    alias: {
-      '@': path.resolve('src'),
-    },
+    alias: aliasConfig,
   },
   resolveLoader: {
     modules: [
@@ -34,13 +33,16 @@ const webpackConfig = {
       loader.images(),
       loader.fonts(),
       loader.medias(),
+      loader.xlsx(),
     ],
   },
   // 配置插件
   plugins: [
     plugin.define(),
+    plugin.happyPack(),
   ],
-  externals: {},
+  externals: {
+  },
   target: 'web',
 };
 

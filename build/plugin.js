@@ -3,6 +3,10 @@ const path = require('path');
 const webpack = require('webpack');
 const notifier = require('node-notifier');
 const internalIp = require('internal-ip');
+const HappyPack = require('happypack');
+const os = require('os');
+
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 const resolve = path.resolve;
 
@@ -44,12 +48,16 @@ exports.uglify = () => {
     extractComments: false,
     uglifyOptions: {
       compress: {
-        unused: true,
         warnings: false,
+        drop_console: true,
+        collapse_vars: true,
+        reduce_vars: true,
+        unused: true,
         drop_debugger: true,
       },
       output: {
         comments: false,
+        beautify: false,
       },
     },
   });
@@ -126,6 +134,23 @@ exports.analyzer = (opt = {}) => {
     reportFilename: opt.filename || 'report.html',
   });
 };
+
+// happyPack 测试
+exports.happyPack = (opt = {}) => {
+  return new HappyPack({
+    // 用id来标识 happypack处理那里类文件
+    id: 'happyBabel',
+    // 如何处理  用法和loader 的配置一样
+    loaders: [{
+      loader: 'babel-loader?cacheDirectory=true',
+    }],
+    // 共享进程池
+    threadPool: happyThreadPool,
+    // 允许 HappyPack 输出日志
+    verbose: true,
+  });
+};
+
 
 const htmlDefaults = {
   title: 'basewebpack-cli',

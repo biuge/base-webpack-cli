@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HappyPack = require('happypack');
 
 const resolve = path.resolve;
 const dev = process.env.NODE_ENV === 'development';
@@ -21,12 +22,15 @@ const cssLoader = {
     importLoaders: 1,
   },
 };
-
+const cfgPath = resolve('src/theme.js');
+const getThemeConfig = require(cfgPath);
+const theme = getThemeConfig;
 const lessLoader = {
   loader: 'less-loader',
   options: {
     javascriptEnabled: true,
     sourceMap: dev,
+    modifyVars: theme,
   },
 };
 const moduleCSSLoader = {
@@ -36,7 +40,7 @@ const moduleCSSLoader = {
     modules: true,
     camelCase: 'only',
     importLoaders: 1,
-    localIdentName: '[path]___[local]___[hash:base64:5]',
+    localIdentName: '[local]___[hash:base64:8]',
   },
 };
 
@@ -112,25 +116,35 @@ exports.eslint = () => {
     options: {
       fix: true,
       cache: dev ? resolve('.cache/eslint') : false,
-      failOnError: !dev, // 生产环境发现代码不合法，则中断编译
+      // failOnError: !dev, // 生产环境发现代码不合法，则中断编译
       useEslintrc: true,
-      formatter: require('eslint-friendly-formatter'),
+      formatter: require('eslint-config-lujing-react'),
     },
   };
 };
 
-// babel
+exports.xlsx = () => {
+  return {
+    test: /\.xlsx$/,
+    exclude: /node_modules/,
+    use: {
+      loader: 'webpack-xlsx-loader',
+    },
+  };
+};
+// babel 好像没变快。。
 exports.babel = () => {
   return {
     test: /\.jsx?$/,
     // include: resolve('src'),
     exclude: /node_modules/,
     use: {
-      loader: 'babel-loader',
-      options: {
-        cacheDirectory: resolve('.cache/babel'),
-        babelrc: true,
-      },
+      // loader: 'babel-loader',
+      loader: 'happypack/loader?id=happyBabel',
+      // options: {
+      //   cacheDirectory: resolve('.cache/babel'),
+      //   babelrc: true,
+      // },
     },
   };
 };
@@ -148,31 +162,31 @@ exports.images = (opt = {}) => {
         },
       },
       // 生产模式启用图片压缩
-      !dev && {
-        loader: 'imagemin-loader',
-        options: {
-          plugins: [
-            {
-              use: 'imagemin-pngquant',
-            },
-            {
-              use: 'imagemin-mozjpeg',
-            },
-            // {
-            //   use: 'imagemin-guetzli'
-            // },
-            // {
-            //   use: 'imagemin-gifsicle'
-            // },
-            // {
-            //   use: 'imagemin-svgo'
-            // },
-            // {
-            //   use: 'imagemin-webp'
-            // }
-          ],
-        },
-      },
+      // !dev && {
+      //   loader: 'imagemin-loader',
+      //   options: {
+      //     plugins: [
+      //       {
+      //         use: 'imagemin-pngquant',
+      //       },
+      //       {
+      //         use: 'imagemin-mozjpeg',
+      //       },
+      //       {
+      //         use: 'imagemin-guetzli',
+      //       },
+      //       {
+      //         use: 'imagemin-gifsicle',
+      //       },
+      //       {
+      //         use: 'imagemin-svgo',
+      //       },
+      //       {
+      //         use: 'imagemin-webp',
+      //       },
+      //     ],
+      //   },
+      // },
     ].filter(p => p),
   };
 };
