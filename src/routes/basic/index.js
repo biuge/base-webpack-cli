@@ -1,10 +1,13 @@
 import React, { Fragment, PureComponent } from 'react';
+import { Route, Redirect, Switch } from 'dva/router';
+
 import { connect } from 'dva';
 import { Button } from 'antd';
 import styles from './index.css';
 import styles2 from './index.less';
 import logo from '@/common/hello/images/logo.png';
 import Hello from '@/common/hello';
+import {getRoutes} from 'utils/utils.js'
 
 
 @connect(({ basic }) => ({
@@ -19,18 +22,22 @@ export default class BasicLayout extends PureComponent {
     });
   }
   render() {
+    const {
+      currentUser, fetchingNotices, notices, routerData, match, location,
+    } = this.props;
     return (
-      <Fragment>
-        <div>{
-          `${Hello}`
-        }</div>
-
-        <div className={styles.a}>basic23</div>
-        <img src={logo} className={styles2.a} />
-        <img src={require('@/common/hello/images/logo.png')} />
-        <Button>12</Button>
-        <a onClick={() => { this.go(); }} >gohome</a>
-      </Fragment>
+      <Switch>
+          {
+            getRoutes(match.path, routerData).map(item => (
+              <Route
+                key={item.key}
+                path={item.path}
+                component={item.component}
+                exact={item.exact}
+              />
+            ))
+          }
+        </Switch>  
     );
   }
 }

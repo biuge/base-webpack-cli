@@ -1,10 +1,12 @@
 
 import dva from 'dva';
-import createHistory from 'history/createBrowserHistory';
 import { reducer as formReducer } from 'redux-form';
+// import createHistory from 'history/createBrowserHistory';
+import { createHashHistory } from 'history';
+
 
 const app = dva({
-  history: createHistory(),
+  history: createHashHistory(),
   extraReducers: {
     form: formReducer,
   },

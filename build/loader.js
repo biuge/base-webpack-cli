@@ -137,10 +137,15 @@ exports.babel = () => {
   return {
     test: /\.jsx?$/,
     // include: resolve('src'),
+    // include: path.join(__dirname, 'src'),
     exclude: /node_modules/,
     use: {
-      // loader: 'babel-loader',
-      loader: 'happypack/loader?id=happyBabel',
+      loader: 'babel-loader',
+      // options: {
+      //   babelrc: true,
+      //   cacheDirectory: true,
+      // },
+      // loader: 'happypack/loader?id=happyBabel',
       // options: {
       //   cacheDirectory: resolve('.cache/babel'),
       //   babelrc: true,
