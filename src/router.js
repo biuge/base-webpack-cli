@@ -5,12 +5,11 @@ import { getRouterData } from './common/routerConfig';
 const { ConnectedRouter } = routerRedux;
 const Config = ({ history, app }) => {
   const routerData = getRouterData(app);
+  const BasicLayout = routerData['/'].component;
   return (
     <ConnectedRouter history={history}>
       <Switch>
-        {
-          routerData.map(i => <Route {...i} />)
-        }
+        <Route path="/" render={props => <BasicLayout {...props} />} />
       </Switch>
     </ConnectedRouter>
   );

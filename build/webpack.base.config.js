@@ -10,9 +10,9 @@ const webpackConfig = {
   devtool: false,
   // output: {},
   resolve: {
-    modules: [
-      path.resolve('node_modules'),
-    ],
+    // modules: [
+    //   path.resolve('node_modules'), //如果写成node_modules会导致dva的一个版本错误 找不到babel-runtime https://github.com/dvajs/dva/issues/1893
+    // ],
     extensions: ['.js', '.vue', '.jsx', '.css', '.less'],
     alias: aliasConfig,
   },
