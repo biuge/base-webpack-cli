@@ -18,6 +18,14 @@ module.exports = (api) => {
         { loose: true },
       ],
       '@babel/plugin-proposal-function-bind',
+      [
+        "import",
+        {
+          "libraryName": "antd",
+          "libraryDirectory": "es",
+          "style": true
+        }
+      ]
     ],
   };
 };

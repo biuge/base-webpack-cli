@@ -82,20 +82,22 @@ exports.css = () => {
 };
 
 exports.less = () => {
+  const loader = dev ? styleLoader : MiniCssExtractPlugin.loader;
   return {
     test: /\.less$/,
     include: /node_modules/,
     // include: path.join(__dirname, '/node_modules/antd-mobile'),
-    use: [styleLoader, cssLoader, lessLoader],
+    use: [loader, cssLoader, lessLoader],
   };
 };
 
 exports.lessModules = () => {
+  const loader = dev ? styleLoader : MiniCssExtractPlugin.loader;
   return {
     test: /\.less$/,
     exclude: /node_modules/,
     // include: path.join(__dirname, '/node_modules/antd-mobile'),
-    use: [styleLoader, moduleCSSLoader, lessLoader],
+    use: [loader, moduleCSSLoader, lessLoader],
   };
 };
 
